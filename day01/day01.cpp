@@ -4,27 +4,51 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <functional>
 
 
 int main()
 {
     //std::cout << "Hello World!\n";
+    std::vector<int> firstBlockArray;
+    std::vector<int> secondBlockArray;
+
     std::ifstream file("input-test");
     std::string str;
     while (std::getline(file, str))
     {
         //std::cout << str << std::endl;
 
-        //std::string s = "scott>=tiger";
         std::string delimiter = "   ";
         std::string firstBlock = str.substr(0, str.find(delimiter));
         std::string secondBlock = str.substr(delimiter.length()+1, str.find(delimiter));
 
-        std::cout << "First Block:" << firstBlock << std::endl;
+        firstBlockArray.push_back(std::stoi(firstBlock));
+        secondBlockArray.push_back(std::stoi(secondBlock));
+
+        //std::cout << "First Block:" << firstBlock << std::endl;
         //std::cout << "---" << std::endl;
 
-        std::cout << "Second Block:" << secondBlock << std::endl;
+        //std::cout << "Second Block:" << secondBlock << std::endl;
         //std::cout << "---" << std::endl;
+    }
+
+    std::cout << "--- Do Sort First Block ---" << std::endl;
+    std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::greater<int>());
+    for (auto const& value : firstBlockArray)
+    {
+        std::cout << value << ",";
+    }
+
+    std::cout << std::endl;
+
+    std::cout << "--- Do Sort Second Block ---" << std::endl;
+    std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::greater<int>());
+    for (auto const& value : secondBlockArray)
+    {
+        std::cout << value << ",";
     }
 }
 
