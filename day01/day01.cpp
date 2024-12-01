@@ -13,7 +13,18 @@ int main()
     std::string str;
     while (std::getline(file, str))
     {
-        std::cout << str << std::endl;
+        //std::cout << str << std::endl;
+
+        //std::string s = "scott>=tiger";
+        std::string delimiter = "   ";
+        std::string firstBlock = str.substr(0, str.find(delimiter));
+        std::string secondBlock = str.substr(delimiter.length()+1, str.find(delimiter));
+
+        std::cout << "First Block:" << firstBlock << std::endl;
+        //std::cout << "---" << std::endl;
+
+        std::cout << "Second Block:" << secondBlock << std::endl;
+        //std::cout << "---" << std::endl;
     }
 }
 
