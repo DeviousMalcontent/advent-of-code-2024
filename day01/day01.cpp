@@ -9,90 +9,50 @@
 #include <functional>
 #include <cstdlib>
 
+/*Declare x2 arrays to store each number block in,
+
+Read in the text file and pass it using a delimiter, in this case the delimiter is 3 spaces, 
+split each line of text up and add them to each individual array, 
+finding the first block is pretty easy it's just a substring and we stop at the first index of the delimiter, 
+the second block we need to take the first blocks length and the delimiters length add them together, 
+that's the offset, and it ends when the line breaks, (there is probably a bug calling str.find(delimiter) at the end of the second block, lol).
+
+Load these values up into each array while we parse the text file, then sort the array blocks low to high.
+
+Declare an int called sum to store our answer, use the Absolute Value function in standard library to calculate the distance, and add it to the sum,
+
+Print answer. 
+*/
 
 int main()
 {
-    //std::cout << "Hello World!\n";
-    std::vector<int> firstBlockArray;
-    std::vector<int> secondBlockArray;
-    //std::vector<int> finalBlockArray;
+    std::vector<int> firstBlockArray, secondBlockArray;
 
     //std::ifstream file("input-test");
     std::ifstream file("input");
     std::string str;
     while (std::getline(file, str))
     {
-        //std::cout << str << std::endl;
-
         std::string delimiter = "   ";
         std::string firstBlock = str.substr(0, str.find(delimiter));
         std::string secondBlock = str.substr(firstBlock.length() + delimiter.length(), str.find(delimiter));
 
-        std::cout << " First Block:" << firstBlock << std::endl;
-        std::cout << "Second Block:" << secondBlock << std::endl;
-
         firstBlockArray.push_back(std::stoi(firstBlock));
         secondBlockArray.push_back(std::stoi(secondBlock));
-
-        //std::cout << "First Block:" << firstBlock << std::endl;
-        //std::cout << "---" << std::endl;
-
-        //std::cout << "Second Block:" << secondBlock << std::endl;
-        //std::cout << "---" << std::endl;
     }
 
-    //std::cout << "--- Do Sort First Block ---" << std::endl;
-    //std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::greater<int>());
     std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::less<int>());
     std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
 
-    std::cout << "--- Do Sort First Block ---" << std::endl;
-    for (auto const& value : firstBlockArray)
-    {
-        std::cout << value << ",";
-    }
-
-    std::cout << "--- Do Sort Second Block ---" << std::endl;
-    for (auto const& value : secondBlockArray)
-    {
-        std::cout << value << ",";
-    }
-
     int sum = 0;
 
-    std::cout << "--- Do calc ---" << std::endl;
     for (size_t i = 0; i < firstBlockArray.size(); ++i)
     {
-        //std::cout << (secondBlockArray[i] - firstBlockArray[i]);
-        //std::cout << std::abs(secondBlockArray[i] - firstBlockArray[i]) << ",";
-
-        //sum = sum + (secondBlockArray[i] - firstBlockArray[i]);
         sum = sum + std::abs(secondBlockArray[i] - firstBlockArray[i]);
-        //std::cout << (secondBlockArray[i] - firstBlockArray[i]);
-
-        //firstBlockArray.push_back(secondBlockArray[i] - firstBlockArray[i]);
     }
 
     std::cout << "--- Answer ---" << std::endl;
     std::cout << sum;
-
-
-    /*
-    for (auto const& value : firstBlockArray)
-    {
-        std::cout << value << ",";
-    }
-
-    std::cout << std::endl;
-
-    //std::cout << "--- Do Sort Second Block ---" << std::endl;
-    //std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::greater<int>());
-    //std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
-    for (auto const& value : secondBlockArray)
-    {
-        std::cout << value << ",";
-    }
-    */
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu// Debug program: F5 or Debug > Start Debugging menu
