@@ -35,8 +35,17 @@ int main()
         //std::cout << "---" << std::endl;
     }
 
-    std::cout << "--- Do Sort First Block ---" << std::endl;
-    std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::greater<int>());
+    //std::cout << "--- Do Sort First Block ---" << std::endl;
+    //std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::greater<int>());
+    std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::less<int>());
+    std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
+
+    for (auto i = 0; i < firstBlockArray.size(); ++i)
+    {
+        std::cout << (secondBlockArray[i] - firstBlockArray[i]);
+    }
+
+    /*
     for (auto const& value : firstBlockArray)
     {
         std::cout << value << ",";
@@ -44,12 +53,14 @@ int main()
 
     std::cout << std::endl;
 
-    std::cout << "--- Do Sort Second Block ---" << std::endl;
-    std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::greater<int>());
+    //std::cout << "--- Do Sort Second Block ---" << std::endl;
+    //std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::greater<int>());
+    //std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
     for (auto const& value : secondBlockArray)
     {
         std::cout << value << ",";
     }
+    */
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu// Debug program: F5 or Debug > Start Debugging menu
