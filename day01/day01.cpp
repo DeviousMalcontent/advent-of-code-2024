@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <cstdlib>
 
 
 int main()
@@ -14,8 +15,10 @@ int main()
     //std::cout << "Hello World!\n";
     std::vector<int> firstBlockArray;
     std::vector<int> secondBlockArray;
+    //std::vector<int> finalBlockArray;
 
-    std::ifstream file("input-test");
+    //std::ifstream file("input-test");
+    std::ifstream file("input");
     std::string str;
     while (std::getline(file, str))
     {
@@ -23,7 +26,10 @@ int main()
 
         std::string delimiter = "   ";
         std::string firstBlock = str.substr(0, str.find(delimiter));
-        std::string secondBlock = str.substr(delimiter.length()+1, str.find(delimiter));
+        std::string secondBlock = str.substr(firstBlock.length() + delimiter.length(), str.find(delimiter));
+
+        std::cout << " First Block:" << firstBlock << std::endl;
+        std::cout << "Second Block:" << secondBlock << std::endl;
 
         firstBlockArray.push_back(std::stoi(firstBlock));
         secondBlockArray.push_back(std::stoi(secondBlock));
@@ -40,10 +46,36 @@ int main()
     std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::less<int>());
     std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
 
-    for (auto i = 0; i < firstBlockArray.size(); ++i)
+    std::cout << "--- Do Sort First Block ---" << std::endl;
+    for (auto const& value : firstBlockArray)
     {
-        std::cout << (secondBlockArray[i] - firstBlockArray[i]);
+        std::cout << value << ",";
     }
+
+    std::cout << "--- Do Sort Second Block ---" << std::endl;
+    for (auto const& value : secondBlockArray)
+    {
+        std::cout << value << ",";
+    }
+
+    int sum = 0;
+
+    std::cout << "--- Do calc ---" << std::endl;
+    for (size_t i = 0; i < firstBlockArray.size(); ++i)
+    {
+        //std::cout << (secondBlockArray[i] - firstBlockArray[i]);
+        //std::cout << std::abs(secondBlockArray[i] - firstBlockArray[i]) << ",";
+
+        //sum = sum + (secondBlockArray[i] - firstBlockArray[i]);
+        sum = sum + std::abs(secondBlockArray[i] - firstBlockArray[i]);
+        //std::cout << (secondBlockArray[i] - firstBlockArray[i]);
+
+        //firstBlockArray.push_back(secondBlockArray[i] - firstBlockArray[i]);
+    }
+
+    std::cout << "--- Answer ---" << std::endl;
+    std::cout << sum;
+
 
     /*
     for (auto const& value : firstBlockArray)
