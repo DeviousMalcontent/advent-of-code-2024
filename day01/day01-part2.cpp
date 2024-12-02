@@ -2,10 +2,79 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <cstdlib>
+#include <map>
+#include <iterator>
+
+template<typename C, typename T>
+bool contains(C&& c, T e) {
+    return std::find(std::begin(c), std::end(c), e) != std::end(c);
+};
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::vector<int> firstBlockArray, secondBlockArray;
+
+    std::ifstream file("input-test");
+    //std::ifstream file("input");
+    std::string str;
+    while (std::getline(file, str))
+    {
+        std::string delimiter = "   ";
+        std::string firstBlock = str.substr(0, str.find(delimiter));
+        std::string secondBlock = str.substr(firstBlock.length() + delimiter.length(), str.find(delimiter));
+
+        firstBlockArray.push_back(std::stoi(firstBlock));
+        secondBlockArray.push_back(std::stoi(secondBlock));
+    }
+
+    std::sort(firstBlockArray.begin(), firstBlockArray.end(), std::less<int>());
+    std::sort(secondBlockArray.begin(), secondBlockArray.end(), std::less<int>());
+
+    /*std::map<int, int> counts;
+    for (int i = 0; i < firstBlockArray.size(); i++) {
+        counts[firstBlockArray[i]]++;
+    } */
+
+    std::map<int, int> counts;
+    for (int i = 0; i < secondBlockArray.size(); i++) {
+        counts[secondBlockArray[i]]++;
+    }
+
+    std::cout << "--- Print Map ---" << std::endl;
+    for (auto const& value : counts)
+    {
+        //std::cout << "[" << value.first << "," << value.second << "]";
+        std::cout << "The number " << value.first << " appears " << value.second << " times in the Second Block Array." << std::endl;
+    }
+
+    std::cout << "--- Match ---" << std::endl;
+    for (size_t i = 0; i < firstBlockArray.size(); ++i)
+    {
+        if(contains(secondBlockArray, firstBlockArray[i])) {
+            std::cout << "The number " << firstBlockArray[i] << " was found in the Second Block Array, and appears " << counts.find(firstBlockArray[i])->second << " times." << std::endl;
+            //counts.find(firstBlockArray[i])->second;
+        }
+        else {
+            std::cout << "The number " << firstBlockArray[i] << " was NOT found in the Second Block Array." << std::endl;
+        }
+    }
+
+    /*
+    int sum = 0;
+
+    for (size_t i = 0; i < firstBlockArray.size(); ++i)
+    {
+        sum = sum + std::abs(secondBlockArray[i] - firstBlockArray[i]);
+    }
+
+    std::cout << "--- Answer ---" << std::endl;
+    std::cout << sum; */
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -9,7 +9,8 @@
 #include <functional>
 #include <cstdlib>
 
-/*Declare x2 arrays to store each number block in,
+/*
+Declare x2 arrays to store each number block in,
 
 Read in the text file and pass it using a delimiter, in this case the delimiter is 3 spaces, 
 split each line of text up and add them to each individual array, 
