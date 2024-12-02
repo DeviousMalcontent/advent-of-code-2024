@@ -20,8 +20,8 @@ int main()
 {
     std::vector<int> firstBlockArray, secondBlockArray;
 
-    std::ifstream file("input-test");
-    //std::ifstream file("input");
+    //std::ifstream file("input-test");
+    std::ifstream file("input");
     std::string str;
     while (std::getline(file, str))
     {
@@ -53,17 +53,26 @@ int main()
         std::cout << "The number " << value.first << " appears " << value.second << " times in the Second Block Array." << std::endl;
     }
 
-    std::cout << "--- Match ---" << std::endl;
+    int sum = 0;
+
+    std::cout << "--- Match and do Calc ---" << std::endl;
     for (size_t i = 0; i < firstBlockArray.size(); ++i)
     {
         if(contains(secondBlockArray, firstBlockArray[i])) {
             std::cout << "The number " << firstBlockArray[i] << " was found in the Second Block Array, and appears " << counts.find(firstBlockArray[i])->second << " times." << std::endl;
             //counts.find(firstBlockArray[i])->second;
+
+            sum = sum + (firstBlockArray[i] * counts.find(firstBlockArray[i])->second);
         }
         else {
             std::cout << "The number " << firstBlockArray[i] << " was NOT found in the Second Block Array." << std::endl;
+
+            //sum = sum + firstBlockArray[i];
         }
     }
+
+    std::cout << "--- Answer ---" << std::endl;
+    std::cout << sum;
 
     /*
     int sum = 0;
