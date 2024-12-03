@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+.vs/*
+.vs/advent-of-code-2024/v16/
+.vs/advent-of-code-2024/v16/Browse.VC.db
