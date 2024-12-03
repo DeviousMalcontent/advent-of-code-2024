@@ -10,35 +10,41 @@
 int main()
 {
     //std::cout << "Hello World!\n";
-
     //std::vector<int> firstBlockArray, secondBlockArray;
    
     std::ifstream file("input-test");
     //std::ifstream file("input");
     std::stringstream stream;
-    std::string Reports;
+    std::string Reports, first, second;
     std::vector<std::string> Levels;
     //std::string delimiter = " ";
 
-    if (file)
-    {
+    if (file) {
         stream << file.rdbuf();
         //std::cout << stream.str();
 
-        while (std::getline(stream, Reports))
-        {
-            while (std::getline(stream, Reports, ' '))
-            {
+        while (std::getline(stream, Reports, ' ')) {
+            std::string::size_type pos = Reports.find('\n');
+            if (Reports.npos != pos) {
+                first = Reports.substr(pos + 1);
+                second = Reports.substr(0, pos);
+                if(first.empty() && !second.empty()) {
+                      Levels.push_back(second);
+                } else {
+                    Levels.push_back(second);
+                    Levels.push_back("\n");
+                    Levels.push_back(first);
+                }
+            } else {
                 Levels.push_back(Reports);
             }
         }
         file.close();
     }
 
-
-
-
-    
+    for (int i = 0; i < Levels.size(); i++) {
+        std::cout << Levels[i];
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
