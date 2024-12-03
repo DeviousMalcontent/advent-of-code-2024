@@ -2,10 +2,43 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //std::cout << "Hello World!\n";
+
+    //std::vector<int> firstBlockArray, secondBlockArray;
+   
+    std::ifstream file("input-test");
+    //std::ifstream file("input");
+    std::stringstream stream;
+    std::string Reports;
+    std::vector<std::string> Levels;
+    //std::string delimiter = " ";
+
+    if (file)
+    {
+        stream << file.rdbuf();
+        //std::cout << stream.str();
+
+        while (std::getline(stream, Reports))
+        {
+            while (std::getline(stream, Reports, ' '))
+            {
+                Levels.push_back(Reports);
+            }
+        }
+        file.close();
+    }
+
+
+
+
+    
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
