@@ -9,43 +9,43 @@
 #include <cmath>
 
 /*
-class Direction {
-public:
-    bool DirectionChangedFlag = false;
-    std::string ReportsDirection;
+The first block of this code reads in our input file and stores it in a buffer then casts it to a string stream, 
+using a while loop we iterate over the strings stream and split each number up using a space as the delimiter, 
+we then must check every string, if we find the carriage return line, we use this to determine that the report has finished.
 
-    Direction(bool inDirectionChangedFlag, std::string inReportsDirection) {
-        DirectionChangedFlag = inDirectionChangedFlag;
-        ReportsDirection = inReportsDirection;
-    }
+We then load each element into the array, there's a little bit of fuckery here with some of the logic because the carriage returned technically goes over two number spaces, 
+so we need to split them up and separate them, I have purposefully put them in reverse order just to fuck with you.
 
-    ~Direction() {
+If we hit the end of the line for the file, we will also need to stick a carriage return into the array.
 
-    }
+We close off the file handler and then we have an array that we can process.
 
-    void setDirectionChangedFlag(bool inDirectionChangedFlag) {
-        DirectionChangedFlag = inDirectionChangedFlag;
-    }
+In our do calculation part, we have a few variables we need to set, report status, and a direction flag which is just a string, 
+we are only checking for three conditions, unknown, descending and increasing, and we use a Boolean as the actual flag once set to determine if the report is safe or unsafe.
 
-    bool getDirectionChangedFlag() {
-        return DirectionChangedFlag;
-    }
+Now we iterate over each member of the array, the first block of code checks for adjacent levels if they differ by at least one, 
+and more than three, again we use the absolute value function, and we find the report as unsafe if this condition is true.
 
-    void setReportsDirection(std::string inReportsDirection) {
-        ReportsDirection = inReportsDirection;
-    }
+The next logic block determines the state of the report, if it is descending or increasing and the final block tags the report as unsafe if the direction changed at all.
 
-    std::string getReportsDirection() {
-        return ReportsDirection;
-    }
-}; */
+Since we're using an array of strings, rather than use an array of integers, 
+we need to determine if we are parsing a number or if we have hit a line break flag, to do this we use a try catch, and process some of the logic in the catch block, 
+if we don't hit a number we assume it's a line break or end of report flag.
+
+There are more elegant ways to do this, but I don't care.
+
+So, if we hit our end of line flag, we will update our end of line flag string in the array to match the report status, 
+if the report says it is marked as unsafe the report will be marked as unsafe if the report status flag is not touched at all during this process, it will be skipped.
+
+Now we've hit the process result section, if a report is unsafe it will be flagged as unsafe and if not it'll be left alone, 
+with this knowledge we can iterate over the array one final time and count the number of safe reports by counting the number of carriage returns, 
+and not the ones that are marked with the unsafe lag, once we summarize this we have our answer.
+*/
 
 int main()
 {
     //std::ifstream file("input-test");
-
     std::ifstream file("input");
-    //346 too high! - the answer for me was 341 lol...
     std::stringstream stream;
     std::string Reports, first, second, ReportsStatus, ReportsDirection;
     std::vector<std::string> Levels;
@@ -81,7 +81,6 @@ int main()
     std::cout << "--- Do Calc ---" << std::endl;
     ReportsStatus = "\n";
     ReportsDirection = "unkown";
-    //Direction temp();
 
     for (int i = 0; i < Levels.size(); i++) {
         int j = i + 1;
@@ -98,14 +97,7 @@ int main()
                     ReportsStatus = " - unsafe!\n";
                 }
 
-                /* if (DirectionChangedFlag == true) {
-
-                } */
-
-                /* if (i = 0)
-                {
-                    //temp();
-                } */
+                // Check for the levels are either all increasing or all decreasing. - This section sets the flag.
                 if (i > 0 && i < Levels.size() && ReportsDirection == "unkown") {
                     if (thisNumber > theNumberNextToIt) {
                         ReportsDirection = "decreasing";
@@ -130,7 +122,7 @@ int main()
                     }
                 }
 
-                // check for the levels are either all increasing or all decreasing.
+                // Check for the levels are either all increasing or all decreasing. - This section triggers when the flag is set.
                 if (DirectionChangedFlag == true)
                 {
                     ReportsStatus = " - unsafe!\n";
@@ -147,8 +139,6 @@ int main()
                 ReportsStatus = "\n";
                 DirectionChangedFlag = false;
                 ReportsDirection = "unkown";
-                //ReportsDirection.clear();
-                //~temp();
             }
 
         }
@@ -156,13 +146,13 @@ int main()
             std::cout << e.what() << std::endl;
         }
 
-        std::cout << Levels[i] << " ";
+        std::cout << Levels[i];
     }
 
     std::cout << std::endl << "--- Processed Results ---" << std::endl;
     int sum = 0;
     for (int i = 0; i < Levels.size(); i++) {
-        std::cout << Levels[i] << " ";
+        std::cout << Levels[i];
 
         if (Levels[i] == "\n") {
             sum++;
