@@ -6,6 +6,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
+
+
+// d for distance (https://en.wikipedia.org/wiki/Euclidean_distance)
+int d(int x, int y) {
+    int d = (y - x) & 7;
+    return d > 4 ? d - 8 : d;
+}
 
 int main()
 {
@@ -15,7 +23,7 @@ int main()
     std::ifstream file("input-test");
     //std::ifstream file("input");
     std::stringstream stream;
-    std::string Reports, first, second;
+    std::string Reports, first, second, ReportsStatus;
     std::vector<std::string> Levels;
     //std::string delimiter = " ";
 
@@ -32,6 +40,7 @@ int main()
                       Levels.push_back(second);
                 } else {
                     Levels.push_back(second);
+                    //Levels.push_back("\n");
                     Levels.push_back("\n");
                     Levels.push_back(first);
                 }
@@ -42,10 +51,76 @@ int main()
         file.close();
     }
 
+    std::cout << "--- Do Calc ---" << std::endl;
+    int sum = 0;
+    ReportsStatus = "\n";
+
+    for (int i = 0; i < Levels.size(); i++) {
+        int j = i + 1;
+        
+        try {
+            int thisNumber = std::stoi(Levels[i]);
+
+            if (j != Levels.size()) {
+                int theNumberNextToIt = std::stoi(Levels[j]);
+
+                if (d(thisNumber, theNumberNextToIt) > 3) {
+                    std::cout << thisNumber << " plus " << theNumberNextToIt << " is unsafe!" << std::endl;
+                    ReportsStatus = " - unsafe!\n";
+                }
+            }
+        }
+        catch (const std::invalid_argument& e) {
+            //std::cout << e.what() << std::endl;
+            //std::cout << "That is not a number, so we must be at the end of the report..." << std::endl;
+
+            //if (Levels[i] == "\n") {
+            if (Levels[i] == "\n") {
+                Levels[i] = ReportsStatus;
+                ReportsStatus = "\n";
+                //ReportsStatus.clear();
+            }
+
+        }
+        catch (const std::out_of_range& e) {
+            std::cout << e.what() << std::endl;
+            
+            /* std::cout << "That is not a number, so we must be at the end of the report..." << std::endl;
+
+            //if (Levels[i] == "\n") {
+            if (Levels[i] == "B") {
+                Levels[i] = ReportsStatus;
+                ReportsStatus.clear();
+            } */
+        }
+
+        
+        /*if (Levels[i] == "\n") {
+            Levels[i] = ReportsStatus;
+            ReportsStatus.clear();
+        }
+        else if (!std::nan(std::stoi(Levels[i])) && d(std::stoi(Levels[i]), std::stoi(Levels[i + 1])) > 3) {
+            std::cout << Levels[i] << " plus " << Levels[i + 1] << "is unsafe!";
+            ReportsStatus = "unsafe";
+        } (*/
+        //} else if(Levels[i] == "\n") {
+        //    Levels[i] = ReportsStatus;
+        //}
+
+        //ReportsStatus.clear();
+
+        std::cout << Levels[i];
+    }
+    std::cout << std::endl << "--- Processed Results ---" << std::endl;
     for (int i = 0; i < Levels.size(); i++) {
         std::cout << Levels[i];
     }
+
+    std::cout << std::endl << "--- Answer ---" << std::endl;
+    std::cout << sum;
 }
+
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
