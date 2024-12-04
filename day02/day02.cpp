@@ -42,8 +42,10 @@ public:
 
 int main()
 {
-    std::ifstream file("input-test");
-    //std::ifstream file("input");
+    //std::ifstream file("input-test");
+    //std::ifstream file("input-test20");
+    std::ifstream file("input");
+    //346 too high!
     std::stringstream stream;
     std::string Reports, first, second, ReportsStatus, ReportsDirection;
     std::vector<std::string> Levels;
@@ -91,7 +93,7 @@ int main()
                 int theNumberNextToIt = std::stoi(Levels[j]);
 
                 // Check for any two adjacent levels differ by at least one and at most three.
-                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) <= 0 || DirectionChangedFlag == true) {
+                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) < 1 || DirectionChangedFlag == true) {
                     std::cout << " " << thisNumber << " with " << theNumberNextToIt << " has a delta of " << std::abs(thisNumber - theNumberNextToIt) << " is unsafe!" << std::endl;
                     ReportsStatus = " - unsafe!\n";
                 }
