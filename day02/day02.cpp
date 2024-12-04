@@ -8,17 +8,46 @@
 #include <vector>
 #include <cmath>
 
+/*
+class Direction {
+public:
+    bool DirectionChangedFlag = false;
+    std::string ReportsDirection;
+
+    Direction(bool inDirectionChangedFlag, std::string inReportsDirection) {
+        DirectionChangedFlag = inDirectionChangedFlag;
+        ReportsDirection = inReportsDirection;
+    }
+
+    ~Direction() {
+
+    }
+
+    void setDirectionChangedFlag(bool inDirectionChangedFlag) {
+        DirectionChangedFlag = inDirectionChangedFlag;
+    }
+
+    bool getDirectionChangedFlag() {
+        return DirectionChangedFlag;
+    }
+
+    void setReportsDirection(std::string inReportsDirection) {
+        ReportsDirection = inReportsDirection;
+    }
+
+    std::string getReportsDirection() {
+        return ReportsDirection;
+    }
+}; */
+
 int main()
 {
-    //std::cout << "Hello World!\n";
-    //std::vector<int> firstBlockArray, secondBlockArray;
-   
     std::ifstream file("input-test");
     //std::ifstream file("input");
     std::stringstream stream;
-    std::string Reports, first, second, ReportsStatus;
+    std::string Reports, first, second, ReportsStatus, ReportsDirection;
     std::vector<std::string> Levels;
-    //std::string delimiter = " ";
+    bool DirectionChangedFlag = false;
 
     if (file) {
         stream << file.rdbuf();
@@ -33,24 +62,24 @@ int main()
                       Levels.push_back(second);
                 } else {
                     Levels.push_back(second);
-                    //Levels.push_back("\n");
                     Levels.push_back("\n");
                     Levels.push_back(first);
                 }
             } else {
                 Levels.push_back(Reports);
             }
+
+            if (stream.eof()) {
+                Levels.push_back("\n");
+            }
         }
         file.close();
     }
 
-     //int test = d(2, 7);
-     //int test = d(6, 2);
-     //int test = std::abs(6 - 2);
-
     std::cout << "--- Do Calc ---" << std::endl;
-    int sum = 0;
     ReportsStatus = "\n";
+    ReportsDirection = "unkown";
+    //Direction temp();
 
     for (int i = 0; i < Levels.size(); i++) {
         int j = i + 1;
@@ -61,9 +90,42 @@ int main()
             if (j != Levels.size()) {
                 int theNumberNextToIt = std::stoi(Levels[j]);
 
-                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) < 1 || (theNumberNextToIt > thisNumber && thisNumber > 2)) {
-                    std::cout << " " << thisNumber << " plus " << theNumberNextToIt << " has a delta of " << std::abs(thisNumber - theNumberNextToIt) << " is unsafe!" << std::endl;
+                // Check for any two adjacent levels differ by at least one and at most three.
+                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) <= 0 || DirectionChangedFlag == true) {
+                    std::cout << " " << thisNumber << " with " << theNumberNextToIt << " has a delta of " << std::abs(thisNumber - theNumberNextToIt) << " is unsafe!" << std::endl;
                     ReportsStatus = " - unsafe!\n";
+                }
+
+                // check for the levels are either all increasing or all decreasing.
+                
+                /* if (DirectionChangedFlag == true) {
+
+                } */
+
+                /* if (i = 0)
+                {
+                    //temp();
+                } */
+                if (i > 0 && i < Levels.size() && ReportsDirection == "unkown") {
+                    if (thisNumber > theNumberNextToIt) {
+                        ReportsDirection = "decreasing";
+                    } else if (thisNumber < theNumberNextToIt) {
+                        ReportsDirection = "increasing";
+                    } 
+                } else if (i > 0 && i < Levels.size() && ReportsDirection == "decreasing") {
+                    if (thisNumber > theNumberNextToIt) {
+                        ReportsDirection = "decreasing";
+                    }
+                    else if (thisNumber < theNumberNextToIt) {
+                        DirectionChangedFlag = true;
+                    }
+                } else if (i > 0 && i < Levels.size() && ReportsDirection == "increasing") {
+                    if (thisNumber > theNumberNextToIt) {
+                        DirectionChangedFlag = true;
+                    }
+                    else if (thisNumber < theNumberNextToIt) {
+                        ReportsDirection = "increasing";
+                    }
                 }
             }
         }
@@ -71,53 +133,36 @@ int main()
             //std::cout << e.what() << std::endl;
             //std::cout << "That is not a number, so we must be at the end of the report..." << std::endl;
 
-            //if (Levels[i] == "\n") {
             if (Levels[i] == "\n") {
                 Levels[i] = ReportsStatus;
                 ReportsStatus = "\n";
-                //ReportsStatus.clear();
+                DirectionChangedFlag = false;
+                ReportsDirection = "unkown";
+                //ReportsDirection.clear();
+                //~temp();
             }
 
         }
         catch (const std::out_of_range& e) {
             std::cout << e.what() << std::endl;
-            
-            /* std::cout << "That is not a number, so we must be at the end of the report..." << std::endl;
-
-            //if (Levels[i] == "\n") {
-            if (Levels[i] == "B") {
-                Levels[i] = ReportsStatus;
-                ReportsStatus.clear();
-            } */
         }
-
-        
-        /*if (Levels[i] == "\n") {
-            Levels[i] = ReportsStatus;
-            ReportsStatus.clear();
-        }
-        else if (!std::nan(std::stoi(Levels[i])) && d(std::stoi(Levels[i]), std::stoi(Levels[i + 1])) > 3) {
-            std::cout << Levels[i] << " plus " << Levels[i + 1] << "is unsafe!";
-            ReportsStatus = "unsafe";
-        } (*/
-        //} else if(Levels[i] == "\n") {
-        //    Levels[i] = ReportsStatus;
-        //}
-
-        //ReportsStatus.clear();
 
         std::cout << Levels[i];
     }
+
     std::cout << std::endl << "--- Processed Results ---" << std::endl;
+    int sum = 0;
     for (int i = 0; i < Levels.size(); i++) {
         std::cout << Levels[i];
+
+        if (Levels[i] == "\n") {
+            sum++;
+        }
     }
 
     std::cout << std::endl << "--- Answer ---" << std::endl;
     std::cout << sum;
 }
-
-
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
