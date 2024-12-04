@@ -8,13 +8,6 @@
 #include <vector>
 #include <cmath>
 
-
-// d for distance (https://en.wikipedia.org/wiki/Euclidean_distance)
-int d(int x, int y) {
-    int d = (y - x) & 7;
-    return d > 4 ? d - 8 : d;
-}
-
 int main()
 {
     //std::cout << "Hello World!\n";
@@ -51,6 +44,10 @@ int main()
         file.close();
     }
 
+     //int test = d(2, 7);
+     //int test = d(6, 2);
+     //int test = std::abs(6 - 2);
+
     std::cout << "--- Do Calc ---" << std::endl;
     int sum = 0;
     ReportsStatus = "\n";
@@ -64,8 +61,8 @@ int main()
             if (j != Levels.size()) {
                 int theNumberNextToIt = std::stoi(Levels[j]);
 
-                if (d(thisNumber, theNumberNextToIt) > 3) {
-                    std::cout << thisNumber << " plus " << theNumberNextToIt << " is unsafe!" << std::endl;
+                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) < 1 || (theNumberNextToIt > thisNumber && thisNumber > 2)) {
+                    std::cout << " " << thisNumber << " plus " << theNumberNextToIt << " has a delta of " << std::abs(thisNumber - theNumberNextToIt) << " is unsafe!" << std::endl;
                     ReportsStatus = " - unsafe!\n";
                 }
             }
