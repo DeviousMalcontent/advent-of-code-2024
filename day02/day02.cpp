@@ -43,9 +43,9 @@ public:
 int main()
 {
     //std::ifstream file("input-test");
-    //std::ifstream file("input-test20");
+
     std::ifstream file("input");
-    //346 too high!
+    //346 too high! - the answer for me was 341 lol...
     std::stringstream stream;
     std::string Reports, first, second, ReportsStatus, ReportsDirection;
     std::vector<std::string> Levels;
@@ -93,13 +93,11 @@ int main()
                 int theNumberNextToIt = std::stoi(Levels[j]);
 
                 // Check for any two adjacent levels differ by at least one and at most three.
-                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) < 1 || DirectionChangedFlag == true) {
+                if (std::abs(thisNumber - theNumberNextToIt) > 3 || std::abs(thisNumber - theNumberNextToIt) < 1) {
                     std::cout << " " << thisNumber << " with " << theNumberNextToIt << " has a delta of " << std::abs(thisNumber - theNumberNextToIt) << " is unsafe!" << std::endl;
                     ReportsStatus = " - unsafe!\n";
                 }
 
-                // check for the levels are either all increasing or all decreasing.
-                
                 /* if (DirectionChangedFlag == true) {
 
                 } */
@@ -119,16 +117,25 @@ int main()
                         ReportsDirection = "decreasing";
                     }
                     else if (thisNumber < theNumberNextToIt) {
+                        ReportsDirection = "increasing";
                         DirectionChangedFlag = true;
                     }
                 } else if (i > 0 && i < Levels.size() && ReportsDirection == "increasing") {
                     if (thisNumber > theNumberNextToIt) {
+                        ReportsDirection = "decreasing";
                         DirectionChangedFlag = true;
                     }
                     else if (thisNumber < theNumberNextToIt) {
                         ReportsDirection = "increasing";
                     }
                 }
+
+                // check for the levels are either all increasing or all decreasing.
+                if (DirectionChangedFlag == true)
+                {
+                    ReportsStatus = " - unsafe!\n";
+                }
+
             }
         }
         catch (const std::invalid_argument& e) {
@@ -149,13 +156,13 @@ int main()
             std::cout << e.what() << std::endl;
         }
 
-        std::cout << Levels[i];
+        std::cout << Levels[i] << " ";
     }
 
     std::cout << std::endl << "--- Processed Results ---" << std::endl;
     int sum = 0;
     for (int i = 0; i < Levels.size(); i++) {
-        std::cout << Levels[i];
+        std::cout << Levels[i] << " ";
 
         if (Levels[i] == "\n") {
             sum++;
